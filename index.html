@@ -9,7 +9,7 @@
   <body>
     <div class="container">
       <ul class="comments">
-        <li class="comment">
+        <!-- <li class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
             <div>12.02.22 12:18</div>
@@ -25,24 +25,7 @@
               <button class="like-button"></button>
             </div>
           </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
+        </li>-->
       </ul>
       <div class="add-form">
         <input
@@ -65,11 +48,52 @@
 
   <script>
     "use strict";
+    let comments = [
+      {
+        userName: "Глеб Фокин",
+        commentDate: '12.02.22 12:18',
+        commentText: "Это будет первый комментарий на этой странице",
+        likes: 3,
+        isLiked: false
+      },
+      {
+        userName: "Варвара Н.",
+        commentDate: '13.02.22 19:22',
+        commentText: "Мне нравится как оформлена эта страница! ❤",
+        likes: 75,
+        isLiked: false
+      }
+    ];
+
 /*     let comentEl = document.querySelector('.comment'); */
     let addFormNameEl = document.querySelector('.add-form-name');
     let addFormTextEl = document.querySelector('.add-form-text');
     let addFormBtnEl = document.querySelector('.add-form-button');
     let commentsEl = document.querySelector('.comments');
+
+    const commentRender = () =>{
+      commentsEl.innerHTML = comments.map((comment, index) =>
+        `<li class="comment">
+          <div class="comment-header">
+            <div>${comment.userName}</div>
+            <div>${comment.commentDate}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${comment.commentText}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">${comment.likes}</span>
+              <button class="like-button ${comment.isLiked ? "-active-like" : ""}" data-index=${index}></button>
+            </div>
+          </div>
+        </li>`
+      ).join('');
+    }
+
+  commentRender();
 
     addFormNameEl.addEventListener('blur', () =>{
       if(addFormNameEl.value === ''){
@@ -90,26 +114,39 @@
         alert('Заполните поля: Введите ваше имя и/или Введите ваш коментарий');
         return;
       }
-    
-      commentsEl.innerHTML = commentsEl.innerHTML + `<li class="comment">
-          <div class="comment-header">
-            <div>${addFormNameEl.value}</div>
-            <div>${new Date().toLocaleString('ru-RU')}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              ${addFormTextEl.value}
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">0</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>`;
+
+      comments.push({
+        userName: addFormNameEl.value,
+        commentDate: new Date().toLocaleString('ru-RU'),
+        commentText: addFormTextEl.value,
+        likes: 0,
+        isLiked: false})
+
+        addFormNameEl.value = '';
+        addFormTextEl.value = '';
+
+        commentRender();
         
     })
+
+    commentsEl.addEventListener('click', (likes) =>{
+      const like = likes.target.closest('.like-button');
+      const index = Number(like.dataset.index);
+
+      const comment = comments[index];
+
+      comment.isLiked = !comment.isLiked;
+
+      if(comment.isLiked){
+        comment.likes++
+      } else (
+        comment.likes--
+      )
+      
+      commentRender();
+      /* console.log(comments); */
+    })
+    
     console.log("It works!");
     
   </script>
