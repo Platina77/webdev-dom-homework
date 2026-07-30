@@ -65,15 +65,15 @@
       }
     ];
 
-/*     let comentEl = document.querySelector('.comment'); */
     let addFormNameEl = document.querySelector('.add-form-name');
     let addFormTextEl = document.querySelector('.add-form-text');
     let addFormBtnEl = document.querySelector('.add-form-button');
     let commentsEl = document.querySelector('.comments');
+    let addFormEl = document.querySelector('.add-form');
 
     const commentRender = () =>{
       commentsEl.innerHTML = comments.map((comment, index) =>
-        `<li class="comment">
+        `<li class="comment" data-index=${index}>
           <div class="comment-header">
             <div>${comment.userName}</div>
             <div>${comment.commentDate}</div>
@@ -116,9 +116,9 @@
       }
 
       comments.push({
-        userName: addFormNameEl.value,
+        userName: addFormNameEl.value.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
         commentDate: new Date().toLocaleString('ru-RU'),
-        commentText: addFormTextEl.value,
+        commentText: addFormTextEl.value.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
         likes: 0,
         isLiked: false})
 
@@ -129,25 +129,49 @@
         
     })
 
-    commentsEl.addEventListener('click', (likes) =>{
-      const like = likes.target.closest('.like-button');
-      const index = Number(like.dataset.index);
-
+    commentsEl.addEventListener('click', (event) =>{
+      const likeButton = event.target.closest('.like-button');
+      if(likeButton){
+        event.stopPropagation();
+    
+      const commentElement = likeButton.closest('.comment');
+      const index = Number(commentElement.dataset.index);
+      const counter = document.querySelectorAll('.likes-counter');
       const comment = comments[index];
 
       comment.isLiked = !comment.isLiked;
-
-      if(comment.isLiked){
-        comment.likes++
-      } else (
-        comment.likes--
-      )
       
-      commentRender();
-      /* console.log(comments); */
-    })
-    
-    console.log("It works!");
+      if (comment.isLiked) {
+      ++comment.likes;
+      } else {
+      --comment.likes;
+      }
+      
+      likeButton.classList.toggle("-active-like", comment.isLiked);
+
+      const counterElement = commentElement.querySelector(".likes-counter");
+
+      counterElement.textContent = comment.likes;
+      return;
+
+      }
+
+      const commentElement = event.target.closest('.comment');
+
+      if(!commentElement){
+        return
+      }
+
+      const index = Number(commentElement.dataset.index);
+      const comment = comments[index];
+
+      addFormNameEl.value = comment.userName;
+      addFormTextEl.value = comment.commentText;
+  })
+
+  
+
+   console.log("It works!");
     
   </script>
 </html>
