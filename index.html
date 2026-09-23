@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Проект "Комменты"</title>
@@ -44,122 +44,129 @@
         </div>
       </div>
     </div>
+    <script type="module" src="index.js"></script>
   </body>
 
-  <script>
+  <!--   <script>
     "use strict";
     let comments = [
       {
         userName: "Глеб Фокин",
-        commentDate: '12.02.22 12:18',
+        commentDate: "12.02.22 12:18",
         commentText: "Это будет первый комментарий на этой странице",
         likes: 3,
-        isLiked: false
+        isLiked: false,
       },
       {
         userName: "Варвара Н.",
-        commentDate: '13.02.22 19:22',
+        commentDate: "13.02.22 19:22",
         commentText: "Мне нравится как оформлена эта страница! ❤",
         likes: 75,
-        isLiked: false
-      }
+        isLiked: false,
+      },
     ];
 
-    let addFormNameEl = document.querySelector('.add-form-name');
-    let addFormTextEl = document.querySelector('.add-form-text');
-    let addFormBtnEl = document.querySelector('.add-form-button');
-    let commentsEl = document.querySelector('.comments');
-    let addFormEl = document.querySelector('.add-form');
+    let addFormNameEl = document.querySelector(".add-form-name");
+    let addFormTextEl = document.querySelector(".add-form-text");
+    let addFormBtnEl = document.querySelector(".add-form-button");
+    let commentsEl = document.querySelector(".comments");
+    let addFormEl = document.querySelector(".add-form");
 
-    const commentRender = () =>{
-      commentsEl.innerHTML = comments.map((comment, index) =>
-        `<li class="comment" data-index=${index}>
-          <div class="comment-header">
-            <div>${comment.userName}</div>
-            <div>${comment.commentDate}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              ${comment.commentText}
+    const commentRender = () => {
+      commentsEl.innerHTML = comments
+        .map(
+          (comment, index) =>
+            `<li class="comment" data-index=${index}>
+            <div class="comment-header">
+              <div>${comment.userName}</div>
+              <div>${comment.commentDate}</div>
             </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">${comment.likes}</span>
-              <button class="like-button ${comment.isLiked ? "-active-like" : ""}" data-index=${index}></button>
+            <div class="comment-body">
+              <div class="comment-text">
+                ${comment.commentText}
+              </div>
             </div>
-          </div>
-        </li>`
-      ).join('');
-    }
+            <div class="comment-footer">
+              <div class="likes">
+                <span class="likes-counter">${comment.likes}</span>
+                <button class="like-button ${comment.isLiked ? "-active-like" : ""}" data-index=${index}></button>
+              </div>
+            </div>
+          </li>`,
+        )
+        .join("");
+    };
 
-  commentRender();
+    commentRender();
 
-    addFormNameEl.addEventListener('blur', () =>{
-      if(addFormNameEl.value === ''){
-        addFormNameEl.style.border = '1px solid red';
+    addFormNameEl.addEventListener("blur", () => {
+      if (addFormNameEl.value === "") {
+        addFormNameEl.style.border = "1px solid red";
       }
     });
 
-    addFormTextEl.addEventListener('blur', () =>{
-      if(addFormTextEl.value === ''){
-        addFormTextEl.style.border = '1px solid red';
+    addFormTextEl.addEventListener("blur", () => {
+      if (addFormTextEl.value === "") {
+        addFormTextEl.style.border = "1px solid red";
       }
     });
 
-    addFormBtnEl.addEventListener('click', () =>{
-      if(addFormNameEl.value === '' || addFormTextEl.value === ''){
-        addFormNameEl.style.border = '1px solid red';
-        addFormTextEl.style.border = '1px solid red';
-        alert('Заполните поля: Введите ваше имя и/или Введите ваш коментарий');
+    addFormBtnEl.addEventListener("click", () => {
+      if (addFormNameEl.value === "" || addFormTextEl.value === "") {
+        addFormNameEl.style.border = "1px solid red";
+        addFormTextEl.style.border = "1px solid red";
+        alert("Заполните поля: Введите ваше имя и/или Введите ваш коментарий");
         return;
       }
 
       comments.push({
-        userName: addFormNameEl.value.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
-        commentDate: new Date().toLocaleString('ru-RU'),
-        commentText: addFormTextEl.value.replaceAll('<', '&lt;').replaceAll('>', '&gt;'),
+        userName: addFormNameEl.value
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;"),
+        commentDate: new Date().toLocaleString("ru-RU"),
+        commentText: addFormTextEl.value
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;"),
         likes: 0,
-        isLiked: false})
+        isLiked: false,
+      });
 
-        addFormNameEl.value = '';
-        addFormTextEl.value = '';
+      addFormNameEl.value = "";
+      addFormTextEl.value = "";
 
-        commentRender();
-        
-    })
+      commentRender();
+    });
 
-    commentsEl.addEventListener('click', (event) =>{
-      const likeButton = event.target.closest('.like-button');
-      if(likeButton){
+    commentsEl.addEventListener("click", (event) => {
+      const likeButton = event.target.closest(".like-button");
+      if (likeButton) {
         event.stopPropagation();
-    
-      const commentElement = likeButton.closest('.comment');
-      const index = Number(commentElement.dataset.index);
-      const counter = document.querySelectorAll('.likes-counter');
-      const comment = comments[index];
 
-      comment.isLiked = !comment.isLiked;
-      
-      if (comment.isLiked) {
-      ++comment.likes;
-      } else {
-      --comment.likes;
+        const commentElement = likeButton.closest(".comment");
+        const index = Number(commentElement.dataset.index);
+        const counter = document.querySelectorAll(".likes-counter");
+        const comment = comments[index];
+
+        comment.isLiked = !comment.isLiked;
+
+        if (comment.isLiked) {
+          ++comment.likes;
+        } else {
+          --comment.likes;
+        }
+
+        likeButton.classList.toggle("-active-like", comment.isLiked);
+
+        const counterElement = commentElement.querySelector(".likes-counter");
+
+        counterElement.textContent = comment.likes;
+        return;
       }
-      
-      likeButton.classList.toggle("-active-like", comment.isLiked);
 
-      const counterElement = commentElement.querySelector(".likes-counter");
+      const commentElement = event.target.closest(".comment");
 
-      counterElement.textContent = comment.likes;
-      return;
-
-      }
-
-      const commentElement = event.target.closest('.comment');
-
-      if(!commentElement){
-        return
+      if (!commentElement) {
+        return;
       }
 
       const index = Number(commentElement.dataset.index);
@@ -167,11 +174,8 @@
 
       addFormNameEl.value = comment.userName;
       addFormTextEl.value = comment.commentText;
-  })
+    });
 
-  
-
-   console.log("It works!");
-    
-  </script>
+    console.log("It works!");
+  </script> -->
 </html>
