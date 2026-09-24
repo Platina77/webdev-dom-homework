@@ -1,5 +1,6 @@
 import { comments } from './users.js'
 import { commentRender } from './commentRender.js'
+import { updateComments } from './users.js'
 
 export const initCommentsListeners = () => {
     const addFormNameEl = document.querySelector('.add-form-name')
@@ -30,22 +31,52 @@ export const initCommentsListeners = () => {
             return
         }
 
-        comments.push({
-            userName: addFormNameEl.value
+        const newComment = {
+            name: addFormNameEl.value
                 .replaceAll('<', '&lt;')
                 .replaceAll('>', '&gt;'),
-            commentDate: new Date().toLocaleString('ru-RU'),
-            commentText: addFormTextEl.value
+
+            text: addFormTextEl.value
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;'),
+        }
+
+        fetch('https://wedev-api.sky.pro/api/v1/Platina77/comments', {
+            method: 'post',
+            body: JSON.stringify(newComment),
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then(() => {
+                return fetch(
+                    'https://wedev-api.sky.pro/api/v1/Platina77/comments',
+                )
+            })
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                updateComments(data.comments)
+                commentRender()
+            })
+
+        /* comments.push({
+            author: {
+                name: addFormNameEl.value
+                    .replaceAll('<', '&lt;')
+                    .replaceAll('>', '&gt;'),
+            },
+            date: new Date().toLocaleString('ru-RU'),
+            text: addFormTextEl.value
                 .replaceAll('<', '&lt;')
                 .replaceAll('>', '&gt;'),
             likes: 0,
-            isLiked: false,
-        })
+            isLiked: false, 
+        })*/
 
         addFormNameEl.value = ''
         addFormTextEl.value = ''
-
-        commentRender()
     })
 
     commentsEl.addEventListener('click', (event) => {
@@ -54,9 +85,9 @@ export const initCommentsListeners = () => {
             event.stopPropagation()
 
             const commentElement = likeButton.closest('.comment')
-            const index = Number(commentElement.dataset.index)
+            const id = Number(commentElement.dataset.index)
             /* const counter = document.querySelectorAll('.likes-counter') */
-            const comment = comments[index]
+            const comment = comments.find((comment) => comment.id === id)
 
             comment.isLiked = !comment.isLiked
 
@@ -81,10 +112,11 @@ export const initCommentsListeners = () => {
             return
         }
 
-        const index = Number(commentElement.dataset.index)
-        const comment = comments[index]
+        const id = Number(commentElement.dataset.index)
 
-        addFormNameEl.value = comment.userName
-        addFormTextEl.value = comment.commentText
+        const comment = comments.find((comment) => comment.id === id)
+
+        addFormNameEl.value = comment.author.name
+        addFormTextEl.value = comment.text
     })
 }
