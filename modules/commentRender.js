@@ -8,7 +8,7 @@ export const commentRender = () => {
                 `<li class="comment" data-index=${comment.id}>
           <div class="comment-header">
             <div>${comment.author.name}</div>
-            <div>${comment.date}</div>
+            <div>${new Date(comment.date).toLocaleString('ru-RU')}</div>
           </div>
           <div class="comment-body">
             <div class="comment-text">
