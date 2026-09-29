@@ -1,6 +1,7 @@
 import { comments } from './users.js'
-import { commentRender } from './commentRender.js'
-import { updateComments } from './users.js'
+/* import { commentRender } from './commentRender.js'
+import { updateComments } from './users.js' */
+import { fetchAndRenderComment } from './fetchAndRenderComment.js'
 
 export const initCommentsListeners = () => {
     const addFormNameEl = document.querySelector('.add-form-name')
@@ -41,6 +42,9 @@ export const initCommentsListeners = () => {
                 .replaceAll('>', '&gt;'),
         }
 
+        addFormBtnEl.disabled = true
+        addFormBtnEl.textContent = 'Добавление комментария...'
+
         fetch('https://wedev-api.sky.pro/api/v1/Platina77/comments', {
             method: 'post',
             body: JSON.stringify(newComment),
@@ -49,16 +53,11 @@ export const initCommentsListeners = () => {
                 return response.json()
             })
             .then(() => {
-                return fetch(
-                    'https://wedev-api.sky.pro/api/v1/Platina77/comments',
-                )
+                return fetchAndRenderComment()
             })
-            .then((response) => {
-                return response.json()
-            })
-            .then((data) => {
-                updateComments(data.comments)
-                commentRender()
+            .then(() => {
+                addFormBtnEl.disabled = false
+                addFormBtnEl.textContent = 'Написать'
             })
 
         /* comments.push({

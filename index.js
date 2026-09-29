@@ -1,17 +1,22 @@
-import { commentRender } from './modules/commentRender.js'
+/* import { commentRender } from './modules/commentRender.js' */
 import { initCommentsListeners } from './modules/addListener.js'
-import { updateComments } from './modules/users.js'
+/* import { updateComments } from './modules/users.js' */
+import { fetchAndRenderComment } from './modules/fetchAndRenderComment.js'
 
-fetch('https://wedev-api.sky.pro/api/v1/Platina77/comments', {
+const commentsEl = document.querySelector('.comments')
+commentsEl.textContent = 'Загрузка комментариев...'
+
+fetchAndRenderComment()
+
+/* fetch('https://wedev-api.sky.pro/api/v1/Platina77/comments', {
     method: 'get',
 })
     .then((response) => {
         return response.json()
     })
     .then((data) => {
-        console.log(data)
         updateComments(data.comments)
         commentRender()
     })
-
+ */
 initCommentsListeners()
