@@ -13,18 +13,6 @@ export let comments = [
         likes: 75,
         isLiked: false,
     },
-
-        comments = [
-        {
-        author: 
-            {name: 'Глеб Фокин'}
-        date: "2023-01-01T08:19:00.916Z"
-        id: 3
-        isLiked: false
-        likes: 0
-        text: "Это мой первый комментарий"
-        }
-        ]
  */
 ]
 
