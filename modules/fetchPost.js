@@ -1,5 +1,5 @@
 export const fetchPost = (newComment) => {
-    return fetch('https://wedev-api.sky.pro/api/v1/Platina77/comments', {
+    return fetch('https://wedev-api.sky.pro/api/v2/Platina77/comments', {
         method: 'post',
         body: JSON.stringify(newComment),
     }).then((response) => {

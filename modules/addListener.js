@@ -9,7 +9,6 @@ export const initCommentsListeners = () => {
     const addFormTextEl = document.querySelector('.add-form-text')
     const addFormBtnEl = document.querySelector('.add-form-button')
     const commentsEl = document.querySelector('.comments')
-    /* let addFormEl = document.querySelector(".add-form"); */
 
     addFormNameEl.addEventListener('blur', () => {
         if (addFormNameEl.value === '') {
@@ -72,20 +71,6 @@ export const initCommentsListeners = () => {
             .finally(() => {
                 addFormBtnEl.disabled = false
                 addFormBtnEl.textContent = 'Написать'
-
-                /* comments.push({
-            author: {
-                name: addFormNameEl.value
-                    .replaceAll('<', '&lt;')
-                    .replaceAll('>', '&gt;'),
-            },
-            date: new Date().toLocaleString('ru-RU'),
-            text: addFormTextEl.value
-                .replaceAll('<', '&lt;')
-                .replaceAll('>', '&gt;'),
-            likes: 0,
-            isLiked: false, 
-        })*/
             })
 
         commentsEl.addEventListener('click', (event) => {
