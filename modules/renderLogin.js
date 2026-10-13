@@ -1,5 +1,5 @@
 import { addCommentRender } from './addCommentRender.js'
-import { initCommentsListeners } from './addListener.js'
+import { initCommentsListeners, initLikesListeners } from './addListener.js'
 import { login } from './api.js'
 import { updateName, updateToken } from './auth.js'
 import { fetchAndRenderComment } from './fetchAndRenderComment.js'
@@ -42,6 +42,7 @@ export const renderLogin = () => {
                 fetchAndRenderComment()
                 addCommentRender()
                 initCommentsListeners()
+                initLikesListeners()
             })
             .catch((error) => {
                 alert(error.message)
