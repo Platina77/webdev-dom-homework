@@ -3,12 +3,12 @@ import { comments } from './users.js'
 import { updateComments } from './users.js' */
 import { fetchAndRenderComment } from './fetchAndRenderComment.js'
 import { fetchPost } from './fetchPost.js'
+import { userName } from './auth.js'
 
 export const initCommentsListeners = () => {
     const addFormNameEl = document.querySelector('.add-form-name')
     const addFormTextEl = document.querySelector('.add-form-text')
     const addFormBtnEl = document.querySelector('.add-form-button')
-    const commentsEl = document.querySelector('.comments')
 
     addFormNameEl.addEventListener('blur', () => {
         if (addFormNameEl.value === '') {
@@ -52,7 +52,7 @@ export const initCommentsListeners = () => {
                 return fetchAndRenderComment()
             })
             .then(() => {
-                addFormNameEl.value = ''
+                addFormNameEl.value = userName
                 addFormTextEl.value = ''
             })
             .catch((error) => {
@@ -72,46 +72,55 @@ export const initCommentsListeners = () => {
                 addFormBtnEl.disabled = false
                 addFormBtnEl.textContent = 'Написать'
             })
+    })
+}
 
-        commentsEl.addEventListener('click', (event) => {
-            const likeButton = event.target.closest('.like-button')
-            if (likeButton) {
-                event.stopPropagation()
+export const initLikesListeners = () => {
+    const addFormNameEl = document.querySelector('.add-form-name')
+    const addFormTextEl = document.querySelector('.add-form-text')
+    const commentsEl = document.querySelector('.comments')
 
-                const commentElement = likeButton.closest('.comment')
-                const id = Number(commentElement.dataset.index)
-                /* const counter = document.querySelectorAll('.likes-counter') */
-                const comment = comments.find((comment) => comment.id === id)
+    commentsEl.addEventListener('click', (event) => {
+        const likeButton = event.target.closest('.like-button')
 
-                comment.isLiked = !comment.isLiked
+        if (likeButton) {
+            event.stopPropagation()
 
-                if (comment.isLiked) {
-                    ++comment.likes
-                } else {
-                    --comment.likes
-                }
+            const commentElement = likeButton.closest('.comment')
 
-                likeButton.classList.toggle('-active-like', comment.isLiked)
-
-                const counterElement =
-                    commentElement.querySelector('.likes-counter')
-
-                counterElement.textContent = comment.likes
-                return
-            }
-
-            const commentElement = event.target.closest('.comment')
-
-            if (!commentElement) {
-                return
-            }
-
-            const id = Number(commentElement.dataset.index)
+            const id = commentElement.dataset.index
+            /* const counter = document.querySelectorAll('.likes-counter') */
 
             const comment = comments.find((comment) => comment.id === id)
 
-            addFormNameEl.value = comment.author.name
-            addFormTextEl.value = comment.text
-        })
+            comment.isLiked = !comment.isLiked
+
+            if (comment.isLiked) {
+                ++comment.likes
+            } else {
+                --comment.likes
+            }
+
+            likeButton.classList.toggle('-active-like', comment.isLiked)
+
+            const counterElement =
+                commentElement.querySelector('.likes-counter')
+
+            counterElement.textContent = comment.likes
+            return
+        }
+
+        const commentElement = event.target.closest('.comment')
+
+        if (!commentElement) {
+            return
+        }
+
+        const id = commentElement.dataset.index
+
+        const comment = comments.find((comment) => comment.id === id)
+
+        addFormNameEl.value = userName
+        addFormTextEl.value = comment.text
     })
 }

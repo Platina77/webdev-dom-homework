@@ -1,10 +1,12 @@
+import { userName } from './auth.js'
+
 export const addCommentRender = () => {
     const addFormEl = document.querySelector('.add-form')
 
     addFormEl.innerHTML = `<input
           type="text"
           class="add-form-name"
-          placeholder="Введите ваше имя"
+          value="${userName}" readonly
         />
         <textarea
           type="textarea"

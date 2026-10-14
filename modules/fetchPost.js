@@ -1,9 +1,12 @@
+import { userToken } from './auth.js'
+
 export const fetchPost = (newComment) => {
     return fetch('https://wedev-api.sky.pro/api/v2/Platina77/comments', {
         method: 'post',
+        headers: { Authorization: `Bearer ${userToken}` },
         body: JSON.stringify(newComment),
     }).then((response) => {
-        console.log('POST status:', response.status)
+        /* console.log('POST status:', response.status) */
 
         if (response.status === 500) {
             return fetchPost(newComment)
