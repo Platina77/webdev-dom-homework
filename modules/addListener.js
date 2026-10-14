@@ -3,6 +3,7 @@ import { comments } from './users.js'
 import { updateComments } from './users.js' */
 import { fetchAndRenderComment } from './fetchAndRenderComment.js'
 import { fetchPost } from './fetchPost.js'
+import { userName } from './auth.js'
 
 export const initCommentsListeners = () => {
     const addFormNameEl = document.querySelector('.add-form-name')
@@ -51,7 +52,7 @@ export const initCommentsListeners = () => {
                 return fetchAndRenderComment()
             })
             .then(() => {
-                addFormNameEl.value = ''
+                addFormNameEl.value = userName
                 addFormTextEl.value = ''
             })
             .catch((error) => {
@@ -115,11 +116,11 @@ export const initLikesListeners = () => {
             return
         }
 
-        const id = Number(commentElement.dataset.index)
+        const id = commentElement.dataset.index
 
         const comment = comments.find((comment) => comment.id === id)
 
-        addFormNameEl.value = comment.author.name
+        addFormNameEl.value = userName
         addFormTextEl.value = comment.text
     })
 }
